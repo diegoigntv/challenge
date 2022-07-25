@@ -2,7 +2,6 @@ package com.challenge.dto;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
@@ -22,12 +21,11 @@ public class ErrorResponse {
 
 	public ErrorResponse(HttpStatus badRequest, String detail) {
 		super();
-		
+
 		this.detail = detail;
 		this.codigo = badRequest.value();
 	}
-		
-    
+
 	private Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
 	private int codigo;
 	private String detail;
