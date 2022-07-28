@@ -29,9 +29,4 @@ public class UserController {
 		return ResponseEntity.ok(userServiceImpl.logIn());
 	}
 
-	@GetMapping(path = "/test")
-	public void test() throws Exception {
-
-	}
-
 }
