@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable().addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests().antMatchers("/sign-up", "/h2-console/**","h2-console/login**").permitAll().anyRequest().authenticated();
+				.authorizeRequests().antMatchers("/sign-up", "/h2-console/**","h2-console/login.**").permitAll().anyRequest().authenticated();
 
 
 	}

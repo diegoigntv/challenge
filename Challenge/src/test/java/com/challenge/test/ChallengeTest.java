@@ -1,36 +1,57 @@
 package com.challenge.test;
 
-import java.time.LocalDateTime;
-
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.challenge.dto.Phone;
 import com.challenge.dto.SignUpDto;
 import com.challenge.dto.SignUpResponseDto;
-import com.challenge.service.IUserService;
+import com.challenge.repository.UserRepository;
+import com.challenge.service.UserServiceImpl;
 
+import junit.framework.Assert;
+
+@ExtendWith(MockitoExtension.class)
 class ChallengeTest {
 
-	@Autowired
-	private IUserService userService;
+	@InjectMocks
+	private UserServiceImpl service;
+	
+	@Mock
+	private UserRepository repository;
 
+	@SuppressWarnings("deprecation")
 	@Test
 	void signUp() throws Exception {
 		Phone phone = new Phone(998565673, 9, "+56");
-		SignUpDto signUp = new SignUpDto("Diego", "Diego@Gmail.com", "AbcdeF12", phone);
-		SignUpResponseDto responseExpected = new SignUpResponseDto();
-		responseExpected.setActive(true);
-		responseExpected.setCreated(LocalDateTime.now());
-		responseExpected.setId("1");
-		responseExpected.setLastLogin(LocalDateTime.now());
-		responseExpected.setToken(
-				"eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjaGwiLCJzdWIiOiJkaWVnb0BzYWFzZGFzZHNhZHNhYWxhaXZlLmNvbSIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2NTg3MzM1MDEsImV4cCI6MTY1ODczNDEwMX0.se0BPNmpK2yvPqgMPoYne4_UIQ-gv_yqGykJ17weoMsv7cWFOVMdNlggmqRcIToe2aDR79ekusbaX42rBcBBGQ");
-
-		System.out.println(signUp);
-		SignUpResponseDto resp = userService.signUp(signUp);
-		Assert.assertEquals(responseExpected,resp );
+		SignUpDto signUp = new SignUpDto("Diego", "Diego@Gmail.com", "AbcdoeF12", phone);
+		
+		SignUpResponseDto expectedResponse = SignUpFixture.getSignUp();
+		expectedResponse.setToken((service.createAuthToken("Diego@Gmail.com")));
+		SignUpResponseDto response = service.signUp(signUp);
+		System.out.println(expectedResponse);
+		System.out.println(response);
+		Assert.assertEquals(expectedResponse, response);
+		
+		
 	}
+	/*
+	@Test
+	void signUp() throws Exception {
+		Phone phone = new Phone(998565673, 9, "+56");
+		SignUpDto signUp = new SignUpDto("Diego", "Diego@Gmail.com", "AbcdoeF12", phone);
+		
+		SignUpResponseDto expectedResponse = SignUpFixture.getSignUp();
+		expectedResponse.setToken((service.createAuthToken("Diego@Gmail.com")));
+		SignUpResponseDto response = service.signUp(signUp);
+		System.out.println(expectedResponse);
+		System.out.println(response);
+		Assert.assertEquals(expectedResponse, response);
+		
+		
+*/
 
 }
